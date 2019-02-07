@@ -8,7 +8,8 @@ Download the executable in the [Releases tab](https://github.com/aosousa/go-lol-
 This tool requires a `config.json` file present in the same directory as the executable, with the following structure:
 ```json
 {
-    "apiKey": "<your-Pandascore-API-key>"
+    "apiKey": "<your-Pandascore-API-key>",
+    "ignoreLeagues": "<Array of leagues to ignore> (i.e. ['LCS'])"
 }
 ```
 

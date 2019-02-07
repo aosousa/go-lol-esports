@@ -48,10 +48,30 @@ func getTodayMatches() {
 	json.Unmarshal(content, &matches)
 
 	if len(matches) > 0 {
-		matches.PrintMatches()
+		// no leagues to ignore - print today's matches as they are
+		if len(config.IgnoreLeagues) == 0 {
+			matches.PrintMatches()
+		} else {
+			finalMatches := removeIgnoredMatches(config.IgnoreLeagues, matches)
+			finalMatches.PrintMatches()
+		}
 	} else {
 		fmt.Println("No matches today.")
 	}
+}
+
+/* Removes matches from ignored leagues from today's matches results
+using the FindInSlice method above */
+func removeIgnoredMatches(ignoreLeagues []string, matches models.Matches) models.Matches {
+	var finalMatches models.Matches
+
+	for _, match := range matches {
+		if !utils.FindInSlice(match.League.Name, ignoreLeagues) {
+			finalMatches = append(finalMatches, match)
+		}
+	}
+
+	return finalMatches
 }
 
 // Prints the list of accepted commands

@@ -9,7 +9,8 @@ import (
 /*Config struct contains all the necessary configurations for the app
 to work correctly. */
 type Config struct {
-	APIKey string `json:"apiKey"`
+	APIKey        string   `json:"apiKey"`
+	IgnoreLeagues []string `json:"ignoreLeagues"`
 }
 
 // CreateConfig adds information to a Config struct
