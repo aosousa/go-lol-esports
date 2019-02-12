@@ -2,9 +2,11 @@ package models
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"os"
 
-	"github.com/aosousa/go-lol-esports/utils"
+	"go-lol-esports/utils"
 )
 
 /*Config struct contains all the necessary configurations for the app
@@ -25,6 +27,11 @@ func CreateConfig() Config {
 	err = json.Unmarshal(jsonFile, &config)
 	if err != nil {
 		utils.HandleError(err)
+	}
+
+	if config.APIKey == "" {
+		fmt.Println("ERROR: PandaScore API key missing.")
+		os.Exit(1)
 	}
 
 	return config

@@ -12,6 +12,8 @@ func main() {
 		cmd := args[1]
 
 		switch cmd {
+		case "-l", "--league":
+			handleLeagueOptions(args)
 		case "-h", "--help":
 			printHelp()
 		case "-v", "--version":
