@@ -3,7 +3,8 @@ package models
 import (
 	"encoding/json"
 	"io/ioutil"
-	"lol-esports-calendar/utils"
+
+	"github.com/aosousa/go-lol-esports/utils"
 )
 
 /*Config struct contains all the necessary configurations for the app

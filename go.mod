@@ -1,0 +1,1 @@
+module github.com/aosousa/go-lol-esports

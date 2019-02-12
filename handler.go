@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"lol-esports-calendar/models"
-	"lol-esports-calendar/utils"
 	"net/http"
 	"time"
+
+	"github.com/aosousa/go-lol-esports/models"
+	"github.com/aosousa/go-lol-esports/utils"
 )
 
 const (
