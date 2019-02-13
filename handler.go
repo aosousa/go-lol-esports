@@ -84,7 +84,15 @@ func removeIgnoredMatches(ignoreLeagues []string, matches models.Matches) models
  * args ([]string) - Arguments passed in the terminal by the user
  */
 func handleLeagueOptions(args []string) {
-	var queryURL string
+	var (
+		queryURL    string
+		leagueCode  string
+		split       string
+		week        string
+		currentYear int
+	)
+
+	currentYear = time.Now().Year()
 
 	lastArg := args[len(args)-1]
 	weekRegex, _ := regexp.Compile("(?i)W[0-9]+")
@@ -93,8 +101,8 @@ func handleLeagueOptions(args []string) {
 	// if week argument was not sent in the command line, perform query for league standings
 	// if it was, perform query for a league's week results
 	if len(weekRegexArg) == 0 {
-		leagueCode := strings.ToUpper(args[len(args)-2])
-		split := strings.Title(lastArg)
+		leagueCode = strings.ToUpper(args[len(args)-2])
+		split = strings.Title(lastArg)
 
 		queryURL = fmt.Sprintf("%s%s/%d_Season/%s_Season", baseLeaguepediaURL, leagueCode, time.Now().Year(), split)
 		resp, err := soup.Get(queryURL)
@@ -102,7 +110,19 @@ func handleLeagueOptions(args []string) {
 			utils.HandleError(err)
 		}
 
-		printLeagueTable(leagueCode, split, resp)
+		printLeagueTable(leagueCode, split, currentYear, resp)
+	} else {
+		leagueCode = strings.ToUpper(args[len(args)-3])
+		split = strings.Title(args[len(args)-2])
+		week = weekRegexArg[0][1:]
+
+		queryURL = fmt.Sprintf("%s%s/%d_Season/%s_Season", baseLeaguepediaURL, leagueCode, time.Now().Year(), split)
+		resp, err := soup.Get(queryURL)
+		if err != nil {
+			utils.HandleError(err)
+		}
+
+		printWeekResults(leagueCode, split, week, currentYear, resp)
 	}
 }
 
@@ -110,11 +130,11 @@ func handleLeagueOptions(args []string) {
  * Receives:
  * leagueCode (string) - Code of the league (LCS, LEC, etc.)
  * split (string) - Split of the league season (Spring, Summer)
+ * year (int) - Current year
  * document (string) - Leaguepedia page HTML document
  */
-func printLeagueTable(leagueCode string, split string, document string) {
-	currentYear := time.Now().Year()
-	fmt.Printf("%s %d %s Standings\n", leagueCode, currentYear, split)
+func printLeagueTable(leagueCode string, split string, year int, document string) {
+	fmt.Printf("%s %d %s Standings\n", leagueCode, year, split)
 
 	doc := soup.HTMLParse(document)
 	standings := doc.Find("table", "class", "wikitable2")
@@ -129,17 +149,55 @@ func printLeagueTable(leagueCode string, split string, document string) {
 	}
 }
 
+/* Print the matches of a week in a league
+ * Receives:
+ * leagueCode (string) - Code of the league (LCS, LEC, etc.)
+ * split (string) - Split of the league season (Spring, Summer)
+ * week (string) - Week number
+ * year (int) - Current year
+ * document (string) - Leaguepedia page HTML document
+ */
+func printWeekResults(leagueCode, split, week string, year int, document string) {
+	fmt.Printf("%s %d %s Week %s Matches\n\n", leagueCode, year, split, week)
+
+	className := fmt.Sprintf("matches-week%s", week)
+	doc := soup.HTMLParse(document)
+	matches := doc.FindAll("tr", "class", className)
+
+	for _, match := range matches {
+		// only go through the td elements that have information about a match
+		if date, ok := match.Attrs()["data-date"]; ok {
+			firstTeam := match.Find("td", "class", "matchlist-team1").Children()[0].Children()[0].Text()
+			secondTeam := match.Find("td", "class", "matchlist-team2").Children()[0].Children()[1].Text()
+			hour := strings.Replace(match.Find("td", "class", "matchlist-time-cell").Children()[1].Children()[0].Children()[0].Text()[10:], ",", ":", -1)
+			scores := match.FindAll("td", "class", "matchlist-score")
+
+			// game has a score - show it
+			if len(scores) > 0 {
+				firstTeamScore := scores[0].Text()
+				secondTeamScore := scores[1].Text()
+
+				fmt.Printf("[%s %s] %s %s - %s %s\n", date, hour, firstTeam, firstTeamScore, secondTeamScore, secondTeam)
+			} else {
+				fmt.Printf("[%s %s] %s vs %s\n", date, hour, firstTeam, secondTeam)
+			}
+		}
+	}
+
+}
+
 // Prints the list of accepted commands
 func printHelp() {
-	fmt.Println("Go LoL Esports (version " + version + ")")
+	fmt.Printf("Go LoL Esports (version %s)\n", version)
 	fmt.Println("Available commands:")
-	fmt.Println("* -h | --help 	  Prints the list of available commands")
+	fmt.Println("* -h | --help\t Prints the list of available commands")
 	fmt.Println("* -v | --version Prints the version of the application")
-	fmt.Println("\n* -l | --league `league code` `split` Prints the standings for `split` of `league code` (e.g. go-lol-esports.exe -l LEC Spring)")
+	fmt.Println("\n* -l | --league `league code` `split`\t     Prints the standings for `split` of `league code` (e.g. go-lol-esports.exe -l LEC Spring)")
+	fmt.Println("* -l | --league `league code` `split` `week` Prints the matches of `week` of `split` of `league code` (e.g. go-lol-esports.exe -l LEC Spring W3)")
 	fmt.Println("If no arguments are sent (e.g. go-lol-esports.exe), the application prints the current day's matches.")
 }
 
 // Prints the current version of the application
 func printVersion() {
-	fmt.Println("Go LoL Esports version " + version)
+	fmt.Printf("Go LoL Esports version %s\n", version)
 }
