@@ -2,10 +2,12 @@ package main
 
 import "os"
 
-func main() {
-	// set up Config struct
+func init() {
+	// set up Config struct before performing any queries
 	initConfig()
+}
 
+func main() {
 	args := os.Args
 
 	if len(args) > 1 {
