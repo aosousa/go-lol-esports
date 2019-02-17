@@ -1,10 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"regexp"
 	"strings"
 	"time"
@@ -31,26 +28,17 @@ func initConfig() {
 // Gets today's professional LoL matches through the Pandascore API
 func getTodayMatches() {
 	var (
-		queryURL    string
-		matches     models.Matches
-		currentDate string
+		pastMatches, upcomingMatches, matches       models.Matches
+		currentDate, pastQueryURL, upcomingQueryURL string
 	)
 
 	currentDate = time.Now().Local().Format("2006-01-02")
-	queryURL = basePandascoreURL + "matches/upcoming?token=" + config.APIKey + "&filter[begin_at]=" + currentDate
+	pastQueryURL = basePandascoreURL + "matches/past?token=" + config.APIKey + "&filter[begin_at]=" + currentDate
+	upcomingQueryURL = basePandascoreURL + "matches/upcoming?token=" + config.APIKey + "&filter[begin_at]=" + currentDate
 
-	res, err := http.Get(queryURL)
-	if err != nil {
-		utils.HandleError(err)
-	}
-	defer res.Body.Close()
-
-	content, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		utils.HandleError(err)
-	}
-
-	json.Unmarshal(content, &matches)
+	pastMatches = pastMatches.GetMatches(pastQueryURL, true)
+	upcomingMatches = upcomingMatches.GetMatches(upcomingQueryURL, false)
+	matches = append(pastMatches, upcomingMatches...)
 
 	if len(matches) > 0 {
 		// no leagues to ignore - print today's matches as they are
@@ -85,11 +73,8 @@ func removeIgnoredMatches(ignoreLeagues []string, matches models.Matches) models
  */
 func handleLeagueOptions(args []string) {
 	var (
-		queryURL    string
-		leagueCode  string
-		split       string
-		week        string
-		currentYear int
+		queryURL, leagueCode, split, week string
+		currentYear                       int
 	)
 
 	currentYear = time.Now().Year()
@@ -183,7 +168,6 @@ func printWeekResults(leagueCode, split, week string, year int, document string)
 			}
 		}
 	}
-
 }
 
 // Prints the list of accepted commands

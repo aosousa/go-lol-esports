@@ -1,6 +1,13 @@
 package models
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+
+	"../utils"
+)
 
 /*Match is the struct that represents a League of Legends Esports match.
  * Contains:
@@ -17,6 +24,7 @@ type Match struct {
 	Serie     Serie      `json:"serie"`
 	Results   []Result   `json:"results"`
 	League    League     `json:"league"`
+	Date      string     `json:"begin_at"`
 }
 
 // Matches represents a slice of Match structs
@@ -28,7 +36,6 @@ type Serie struct {
 	Slug   string `json:"slug"`
 	Season string `json:"season"`
 	Name   string `json:"full_name"`
-	Date   string `json:"begin_at"`
 }
 
 // League is the struct that represents a League of Legends league.
@@ -68,7 +75,46 @@ func (m Matches) PrintMatches() {
 	for _, match := range m {
 		leagueName := fmt.Sprintf("%s %s", match.League.Name, match.Serie.Name)
 		teams := fmt.Sprintf("%s vs %s", match.Opponents[0].Team.Acronym, match.Opponents[1].Team.Acronym)
-		formattedDate := fmt.Sprintf("%s %s", match.Serie.Date[0:10], match.Serie.Date[11:19])
+		formattedDate := fmt.Sprintf("%s %s", match.Date[0:10], match.Date[11:19])
 		fmt.Printf("[%s] %s (%s)\n", formattedDate, teams, leagueName)
 	}
+}
+
+/*GetMatches gets past or upcoming matches from the current date and returns the Matches struct
+ * Receives:
+ * url (string) - Endpoint URL
+ *
+ * Returns: Matches struct
+ */
+func (m Matches) GetMatches(url string, sort bool) Matches {
+	res, err := http.Get(url)
+	if err != nil {
+		utils.HandleError(err)
+	}
+	defer res.Body.Close()
+
+	content, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		utils.HandleError(err)
+	}
+
+	json.Unmarshal(content, &m)
+
+	if sort {
+		return m.sortMatches()
+	}
+
+	return m
+}
+
+/* Sorts matches by date by looping through the original slice in reverse
+before sending them to the handler.*/
+func (m Matches) sortMatches() Matches {
+	var newMatchSlice Matches
+
+	for i := len(m) - 1; i >= 0; i-- {
+		newMatchSlice = append(newMatchSlice, m[i])
+	}
+
+	return newMatchSlice
 }
