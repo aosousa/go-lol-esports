@@ -9,7 +9,7 @@ This tool requires a `config.json` file present in the same directory as the exe
 ```json
 {
     "apiKey": "<your-Pandascore-API-key>",
-    "ignoreLeagues": "<Array of leagues to ignore> (i.e. ['LCS'])"
+    "ignoreLeagues": "<Array of leagues to ignore> (i.e. ['LCS', 'VCS'])"
 }
 ```
 
