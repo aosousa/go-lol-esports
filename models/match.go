@@ -18,13 +18,13 @@ import (
  * Results struct - information about the score of the match (along with Opponents struct, it' used to get the score of match)
  */
 type Match struct {
-	Winner    Winner     `json:"winner"`
-	Opponents []Opponent `json:"opponents"`
-	Name      string     `json:"name"`
-	Serie     Serie      `json:"serie"`
-	Results   []Result   `json:"results"`
-	League    League     `json:"league"`
-	Date      string     `json:"begin_at"`
+	Winner    Winner    `json:"winner"`
+	Opponents Opponents `json:"opponents"`
+	Name      string    `json:"name"`
+	Serie     Serie     `json:"serie"`
+	Results   Results   `json:"results"`
+	League    League    `json:"league"`
+	Date      string    `json:"begin_at"`
 }
 
 // Matches represents a slice of Match structs
@@ -59,11 +59,17 @@ type Opponent struct {
 	} `json:"opponent"`
 }
 
+// Opponents represents a slice of Opponent structs
+type Opponents []Opponent
+
 // Result is the struct that contains information about the score of a match.
 type Result struct {
 	TeamID int `json:"team_id"`
 	Score  int `json:"score"`
 }
+
+// Results represents a slice of Result structs
+type Results []Result
 
 // Error is the struct that contains information about a possible error in an HTTP request to the API
 type Error struct {
@@ -73,8 +79,22 @@ type Error struct {
 // PrintMatches takes the information of each Match struct stored in a Matches slice and prints it out to the user
 func (m Matches) PrintMatches() {
 	for _, match := range m {
+		var teams string
+
 		leagueName := fmt.Sprintf("%s %s", match.League.Name, match.Serie.Name)
-		teams := fmt.Sprintf("%s vs %s", match.Opponents[0].Team.Acronym, match.Opponents[1].Team.Acronym)
+		if match.hasScores() {
+			var firstTeamScore, secondTeamScore int
+
+			if match.Opponents[0].Team.Acronym == match.Winner.Acronym {
+				firstTeamScore, secondTeamScore = match.Results[0].Score, match.Results[1].Score
+			} else {
+				firstTeamScore, secondTeamScore = match.Results[1].Score, match.Results[0].Score
+			}
+
+			teams = fmt.Sprintf("%s %d - %d %s", match.Opponents[0].Team.Acronym, firstTeamScore, secondTeamScore, match.Opponents[1].Team.Acronym)
+		} else {
+			teams = fmt.Sprintf("%s vs %s", match.Opponents[0].Team.Acronym, match.Opponents[1].Team.Acronym)
+		}
 		formattedDate := fmt.Sprintf("%s %s", match.Date[0:10], match.Date[11:19])
 		fmt.Printf("[%s] %s (%s)\n", formattedDate, teams, leagueName)
 	}
@@ -117,4 +137,13 @@ func (m Matches) sortMatches() Matches {
 	}
 
 	return newMatchSlice
+}
+
+/* Checks if a match already has scores to show */
+func (m Match) hasScores() bool {
+	if m.Results[0].Score == 0 && m.Results[1].Score == 0 {
+		return false
+	}
+
+	return true
 }
