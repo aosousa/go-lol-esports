@@ -76,13 +76,17 @@ type Error struct {
 	Error string `json:"error"`
 }
 
-// PrintMatches takes the information of each Match struct stored in a Matches slice and prints it out to the user
-func (m Matches) PrintMatches() {
+/*PrintMatches takes the information of each Match struct stored in a Matches slice and prints it out to the user.
+ * Receives:
+ * showResults (bool) - Whether or not to show results if they are available
+ */
+func (m Matches) PrintMatches(showResults bool) {
 	for _, match := range m {
 		var teams string
 
 		leagueName := fmt.Sprintf("%s %s", match.League.Name, match.Serie.Name)
-		if match.hasScores() {
+
+		if match.hasScores() && showResults {
 			var firstTeamScore, secondTeamScore int
 
 			if match.Opponents[0].Team.Acronym == match.Winner.Acronym {

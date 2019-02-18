@@ -43,10 +43,10 @@ func getTodayMatches() {
 	if len(matches) > 0 {
 		// no leagues to ignore - print today's matches as they are
 		if len(config.IgnoreLeagues) == 0 {
-			matches.PrintMatches()
+			matches.PrintMatches(config.ShowResults)
 		} else {
 			finalMatches := removeIgnoredMatches(config.IgnoreLeagues, matches)
-			finalMatches.PrintMatches()
+			finalMatches.PrintMatches(config.ShowResults)
 		}
 	} else {
 		fmt.Println("No matches today.")

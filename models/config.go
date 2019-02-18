@@ -14,6 +14,7 @@ to work correctly. */
 type Config struct {
 	APIKey        string   `json:"apiKey"`
 	IgnoreLeagues []string `json:"ignoreLeagues"`
+	ShowResults   bool     `json:"showResults"`
 }
 
 // CreateConfig adds information to a Config struct
