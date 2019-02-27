@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"../utils"
+	"github.com/aosousa/go-lol-esports/utils"
 )
 
 /*Match is the struct that represents a League of Legends Esports match.

@@ -6,10 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"./models"
-	"./utils"
-
 	"github.com/anaskhan96/soup"
+	"github.com/aosousa/go-lol-esports/models"
+	"github.com/aosousa/go-lol-esports/utils"
 )
 
 const (

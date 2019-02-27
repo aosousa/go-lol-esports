@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"../utils"
+	"github.com/aosousa/go-lol-esports/utils"
 )
 
 /*Config struct contains all the necessary configurations for the app

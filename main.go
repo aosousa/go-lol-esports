@@ -1,6 +1,8 @@
 package main
 
-import "os"
+import (
+	"os"
+)
 
 func init() {
 	// set up Config struct before performing any queries
@@ -20,6 +22,8 @@ func main() {
 			printHelp()
 		case "-v", "--version":
 			printVersion()
+		default:
+			printHelp()
 		}
 	} else {
 		getTodayMatches()
