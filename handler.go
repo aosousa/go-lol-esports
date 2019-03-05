@@ -9,6 +9,7 @@ import (
 	"github.com/anaskhan96/soup"
 	"github.com/aosousa/go-lol-esports/models"
 	"github.com/aosousa/go-lol-esports/utils"
+	ut "github.com/aosousa/golang-utils"
 )
 
 const (
@@ -27,17 +28,20 @@ func initConfig() {
 // Gets today's professional LoL matches through the Pandascore API
 func getTodayMatches() {
 	var (
-		pastMatches, upcomingMatches, matches       models.Matches
-		currentDate, pastQueryURL, upcomingQueryURL string
+		pastMatches, liveMatches, upcomingMatches, matches           models.Matches
+		currentDate, pastQueryURL, runningQueryURL, upcomingQueryURL string
 	)
 
 	currentDate = time.Now().Local().Format("2006-01-02")
 	pastQueryURL = basePandascoreURL + "matches/past?token=" + config.APIKey + "&filter[begin_at]=" + currentDate
+	runningQueryURL = basePandascoreURL + "matches/running?token=" + config.APIKey
 	upcomingQueryURL = basePandascoreURL + "matches/upcoming?token=" + config.APIKey + "&filter[begin_at]=" + currentDate
 
 	pastMatches = pastMatches.GetMatches(pastQueryURL, true)
+	liveMatches = liveMatches.GetMatches(runningQueryURL, true)
 	upcomingMatches = upcomingMatches.GetMatches(upcomingQueryURL, false)
-	matches = append(pastMatches, upcomingMatches...)
+	matches = append(pastMatches, liveMatches...)
+	matches = append(liveMatches, upcomingMatches...)
 
 	if len(matches) > 0 {
 		// no leagues to ignore - print today's matches as they are
@@ -52,13 +56,12 @@ func getTodayMatches() {
 	}
 }
 
-/* Removes matches from ignored leagues from today's matches results
-using the FindInSlice method above */
+// Removes matches from ignored leagues from today's matches results
 func removeIgnoredMatches(ignoreLeagues []string, matches models.Matches) models.Matches {
 	var finalMatches models.Matches
 
 	for _, match := range matches {
-		if !utils.FindInSlice(match.League.Name, ignoreLeagues) {
+		if !ut.FindStringInSlice(match.League.Name, ignoreLeagues) {
 			finalMatches = append(finalMatches, match)
 		}
 	}
