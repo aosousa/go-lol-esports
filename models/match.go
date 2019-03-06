@@ -25,6 +25,7 @@ type Match struct {
 	Results   Results   `json:"results"`
 	League    League    `json:"league"`
 	Date      string    `json:"begin_at"`
+	Status    string    `json:"status"`
 }
 
 // Matches represents a slice of Match structs
@@ -79,13 +80,15 @@ type Error struct {
 /*PrintMatches takes the information of each Match struct stored in a Matches slice and prints it out to the user.
  * Receives:
  * showResults (bool) - Whether or not to show results if they are available
+ * liveMatches (bool) - Whether or not that set of matches is from the /running endpoints
  */
 func (m Matches) PrintMatches(showResults bool) {
 	for _, match := range m {
-		var teams string
+		var teams, formattedDate string
 
 		leagueName := fmt.Sprintf("%s %s", match.League.Name, match.Serie.Name)
 
+		// match has a score and showResults is true - show the scores
 		if match.hasScores() && showResults {
 			var firstTeamScore, secondTeamScore int
 
@@ -99,7 +102,14 @@ func (m Matches) PrintMatches(showResults bool) {
 		} else {
 			teams = fmt.Sprintf("%s vs %s", match.Opponents[0].Team.Acronym, match.Opponents[1].Team.Acronym)
 		}
-		formattedDate := fmt.Sprintf("%s %s", match.Date[0:10], match.Date[11:19])
+
+		// live match is running but does not have a winner yet - add the LIVE tag
+		if match.Status == "running" {
+			formattedDate = fmt.Sprintf("%s %s LIVE", match.Date[0:10], match.Date[11:19])
+		} else {
+			formattedDate = fmt.Sprintf("%s %s", match.Date[0:10], match.Date[11:19])
+		}
+
 		fmt.Printf("[%s] %s (%s)\n", formattedDate, teams, leagueName)
 	}
 }

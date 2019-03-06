@@ -9,11 +9,33 @@ This tool requires a `config.json` file present in the same directory as the exe
 ```json
 {
     "apiKey": "<your-Pandascore-API-key>",
-    "ignoreLeagues": "<Array of leagues to ignore> (i.e. ['LCS', 'VCS'])"
+    "ignoreLeagues": "<Array of leagues to ignore> (i.e. ['LCS', 'VCS'])",
+    "showResults": true/false (Whether or not to show match results if they are available)
 }
 ```
 
+Available league codes (for the ignoreLeagues configuration):
+| League Code | Description |
+| --- | --- |
+| LCS | LoL Championship Series (NA) |
+| LEC | LoL European Championship | 
+| LCK | LoL Champions Korea | 
+| LPL | LoL Pro League (China) |
+| LMS | League Master Series (Taiwan) |
+| CBLOL | Campeonato Brasileiro LoL (Brazil) |
+| LCL | LoL Russia League |
+| LJL | LoL Japan League |
+| LLA | Latin America League |
+| OPL | Oceanic Pro League |
+| LST | LoL SEA Tour |
+| TCL | Turkish Champions League |
+| VCS | Vietnam Championship Series |
+| LVP SLO | SuperLiga Orange (Spain) |
+
 ### Usage
+```
+go-lol-esports.exe [-l | --league | -h | --help | -v | --version]
+```
 
 ### Options
 

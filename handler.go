@@ -41,7 +41,7 @@ func getTodayMatches() {
 	liveMatches = liveMatches.GetMatches(runningQueryURL, true)
 	upcomingMatches = upcomingMatches.GetMatches(upcomingQueryURL, false)
 	matches = append(pastMatches, liveMatches...)
-	matches = append(liveMatches, upcomingMatches...)
+	matches = append(matches, upcomingMatches...)
 
 	if len(matches) > 0 {
 		// no leagues to ignore - print today's matches as they are
