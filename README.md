@@ -15,6 +15,7 @@ This tool requires a `config.json` file present in the same directory as the exe
 ```
 
 Available league codes (for the ignoreLeagues configuration):
+
 | League Code | Description |
 | --- | --- |
 | LCS | LoL Championship Series (NA) |
