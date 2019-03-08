@@ -41,6 +41,14 @@ go-lol-esports.exe [-l | --league | -h | --help | -v | --version]
 
 ### Options
 
+```
+-h, --help Prints the list of available commands
+-v, --version Prints the version of the application
+-l, --league CODE SPLIT Prints the standings for a split of a league (e.g. go-lol-esports.exe -l LEC Spring)
+-l, --league CODE SPLIT WEEK Prints the matches of a week of a split of a league (e.g. go-lol-esports.exe -l LEC Spring W3)
+
+```
+
 ### Examples
 
 ### Contribute
