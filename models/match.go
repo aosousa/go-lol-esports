@@ -80,9 +80,29 @@ type Error struct {
 /*PrintMatches takes the information of each Match struct stored in a Matches slice and prints it out to the user.
  * Receives:
  * showResults (bool) - Whether or not to show results if they are available
- * liveMatches (bool) - Whether or not that set of matches is from the /running endpoints
  */
 func (m Matches) PrintMatches(showResults bool) {
+	// print finished matches
+	finishedMatches := m.filterMatchesByStatus("finished")
+	fmt.Println("Finished matches:")
+	finishedMatches.printSection(showResults)
+
+	// print live matches
+	liveMatches := m.filterMatchesByStatus("running")
+	fmt.Println("\nLive matches:")
+	liveMatches.printSection(showResults)
+
+	// print upcomming matches
+	upcomingMatches := m.filterMatchesByStatus("not_started")
+	fmt.Println("\nUpcoming matches:")
+	upcomingMatches.printSection(showResults)
+}
+
+/* Prints a section of matches (finished, running, upcoming)
+ * Receives:
+ * showResults (bool) - Whether ot not to show results if they are available
+ */
+func (m Matches) printSection(showResults bool) {
 	for _, match := range m {
 		var teams, formattedDate string
 
@@ -160,4 +180,17 @@ func (m Match) hasScores() bool {
 	}
 
 	return true
+}
+
+/* Filter matches by their status (not started, finished, running) */
+func (m Matches) filterMatchesByStatus(status string) Matches {
+	var filteredMatches Matches
+
+	for _, match := range m {
+		if match.Status == status {
+			filteredMatches = append(filteredMatches, match)
+		}
+	}
+
+	return filteredMatches
 }

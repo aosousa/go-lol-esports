@@ -10,7 +10,7 @@ This tool requires a `config.json` file present in the same directory as the exe
 {
     "apiKey": "<your-Pandascore-API-key>",
     "ignoreLeagues": "<Array of leagues to ignore> (i.e. ['LCS', 'VCS'])",
-    "showResults": true/false (Whether or not to show match results if they are available)
+    "showResults": true "(Whether or not to show match results if they are available)"
 }
 ```
 
@@ -21,6 +21,7 @@ Available league codes (for the ignoreLeagues configuration):
 | LCS | LoL Championship Series (NA) |
 | LEC | LoL European Championship | 
 | LCK | LoL Champions Korea | 
+| Challenger Korea | LoL Challengers Korea |
 | LPL | LoL Pro League (China) |
 | LMS | League Master Series (Taiwan) |
 | CBLOL | Campeonato Brasileiro LoL (Brazil) |
