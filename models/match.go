@@ -9,23 +9,16 @@ import (
 	"github.com/aosousa/go-lol-esports/utils"
 )
 
-/*Match is the struct that represents a League of Legends Esports match.
- * Contains:
- * Winner struct - information about the winner of the match (used to get the winner of the match)
- * Opponents struct - detailed information about the teams facing each other (along with Results struct, it's used to get the score of the match)
- * Serie struct - detailed information about the league split the teams are competing in (along with League struct, used to get the league's name and split)
- * League struct - detailed information about the league the teams are competing in (along with Serie struct, used to get the league's name and split)
- * Results struct - information about the score of the match (along with Opponents struct, it' used to get the score of match)
- */
+// Match is the struct that represents a League of Legends eSports match.
 type Match struct {
-	Winner    Winner    `json:"winner"`
-	Opponents Opponents `json:"opponents"`
-	Name      string    `json:"name"`
-	Serie     Serie     `json:"serie"`
-	Results   Results   `json:"results"`
-	League    League    `json:"league"`
-	Date      string    `json:"begin_at"`
-	Status    string    `json:"status"`
+	Winner    Winner    `json:"winner"` // Information about the winner of the match
+	Opponents Opponents `json:"opponents"` // Detailed information about the teams facing each other (along with Results struct, it's used to get the score of the match)
+	Name      string    `json:"name"` // Match opponents in a string (i.e. C9 vs CLG)
+	Serie     Serie     `json:"serie"` // Detailed information about the league split the teams are competing in (along with Serie struct, it's used to get the league's name and split)
+	Results   Results   `json:"results"` // Information about the score of the match
+	League    League    `json:"league"` // Detailed information about the league the teams are competing in (along with the Serie struct, it's used to get the league's name and split)
+	Date      string    `json:"begin_at"` // Date/time of match kick off
+	Status    string    `json:"status"` // Status of the match (running, finished)
 }
 
 // Matches represents a slice of Match structs
@@ -33,30 +26,24 @@ type Matches []Match
 
 // Serie is the struct that represents a League of Legends league split.
 type Serie struct {
-	Year   int    `json:"year"`
-	Slug   string `json:"slug"`
-	Season string `json:"season"`
-	Name   string `json:"full_name"`
+	Name   string `json:"full_name"` // Name of the League of Legends league split
 }
 
 // League is the struct that represents a League of Legends league.
 type League struct {
-	Slug string `json:"slug"`
-	Name string `json:"name"`
+	Name string `json:"name"` // Name of the League of Legends league
 }
 
 // Winner is the struct that contains information about the team who won a match.
 type Winner struct {
-	Name    string `json:"name"`
-	Acronym string `json:"acronym"`
+	Acronym string `json:"acronym"` // Acronym of the winner of the match
 }
 
 // Opponent is the struct that contains information about a team playing in a match.
 type Opponent struct {
 	Team struct {
-		Name    string `json:"name"`
-		ID      int    `json:"id"`
-		Acronym string `json:"acronym"`
+		Name    string `json:"name"` // Name of the team
+		Acronym string `json:"acronym"` // Acronym of the name of the team
 	} `json:"opponent"`
 }
 
@@ -65,17 +52,11 @@ type Opponents []Opponent
 
 // Result is the struct that contains information about the score of a match.
 type Result struct {
-	TeamID int `json:"team_id"`
-	Score  int `json:"score"`
+	Score  int `json:"score"` // Number of games won by a team in a match
 }
 
 // Results represents a slice of Result structs
 type Results []Result
-
-// Error is the struct that contains information about a possible error in an HTTP request to the API
-type Error struct {
-	Error string `json:"error"`
-}
 
 /*PrintMatches takes the information of each Match struct stored in a Matches slice and prints it out to the user.
  * Receives:

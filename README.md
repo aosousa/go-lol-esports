@@ -44,12 +44,30 @@ go-lol-esports.exe [-l | --league | -h | --help | -v | --version]
 ```
 -h, --help Prints the list of available commands
 -v, --version Prints the version of the application
--l, --league CODE SPLIT Prints the standings for a split of a league (e.g. go-lol-esports.exe -l LEC Spring)
--l, --league CODE SPLIT WEEK Prints the matches of a week of a split of a league (e.g. go-lol-esports.exe -l LEC Spring W3)
+-l, --league CODE SPLIT Prints the standings for a split of a league (e.g. go-lol-esports.exe -l LCS Spring)
+-l, --league CODE SPLIT WEEK Prints the matches of a week of a split of a league (e.g. go-lol-esports.exe -l LCS Spring W3)
 
 ```
 
 ### Examples
+
+#### Show today's matches
+
+`$ go-lol-esports.exe`
+
+![ScreenShot](/img/today_matches.jpg)
+
+#### Show standings for a split of a league
+
+`$ go-lol-esports.exe -l LCS Spring`
+
+![ScreenShot](/img/league_standings.jpg)
+
+#### Show results for a week of a split of a league
+
+`$ go-lol-esports.exe -l LCS Spring W3`
+
+![ScreenShot](/img/league_week_results.jpg)
 
 ### Contribute
 

@@ -98,6 +98,7 @@ func handleLeagueOptions(args []string) {
 		}
 
 		printLeagueTable(leagueCode, split, currentYear, resp)
+		printLeaguePlayoffs(leagueCode, split, currentYear)
 	} else {
 		leagueCode = strings.ToUpper(args[len(args)-3])
 		split = strings.Title(args[len(args)-2])
@@ -117,7 +118,7 @@ func handleLeagueOptions(args []string) {
  * Receives:
  * leagueCode (string) - Code of the league (LCS, LEC, etc.)
  * split (string) - Split of the league season (Spring, Summer)
- * year (int) - Current year
+ * year (int) - Year of the season
  * document (string) - Leaguepedia page HTML document
  */
 func printLeagueTable(leagueCode string, split string, year int, document string) {
@@ -136,21 +137,56 @@ func printLeagueTable(leagueCode string, split string, year int, document string
 	}
 }
 
+/* Print a league's playoff results
+ * Receives:
+ * leagueCode (string) - Code of the league (LCS, LEC, etc.)
+ * split (string) - Split of the league season (Spring, Summer)
+ * year (int) - Year of the season
+ */
+func printLeaguePlayoffs(leagueCode string, split string, year int) {
+	fmt.Printf("\n%s %d %s Playoffs\n", leagueCode, year, split)
+
+	queryURL := fmt.Sprintf("%s%s/%d_Season/%s_Playoffs", baseLeaguepediaURL, leagueCode, time.Now().Year(), split)
+	resp, err := soup.Get(queryURL)
+	if err != nil {
+		utils.HandleError(err)
+	}
+
+	doc := soup.HTMLParse(resp)
+	rounds := doc.Find("div", "class", "ml-normal-pred-and-results").Children()
+	
+	for _, round := range rounds {
+		roundName := round.Children()[0].Children()[0].Children()[0].Children()[0].Children()[1].NodeValue
+		fmt.Println(roundName)
+
+		roundMatchTRs := round.Children()[0].Children()[0].Children()
+		printLeaguepediaMatches(roundMatchTRs)
+		fmt.Println()
+	}
+}
+
 /* Print the matches of a week in a league
  * Receives:
  * leagueCode (string) - Code of the league (LCS, LEC, etc.)
  * split (string) - Split of the league season (Spring, Summer)
  * week (string) - Week number
- * year (int) - Current year
+ * year (int) - Year of the season
  * document (string) - Leaguepedia page HTML document
  */
 func printWeekResults(leagueCode, split, week string, year int, document string) {
 	fmt.Printf("%s %d %s Week %s Matches\n\n", leagueCode, year, split, week)
 
-	className := fmt.Sprintf("matches-week%s", week)
+	className := fmt.Sprintf("ml-w%s", week)
 	doc := soup.HTMLParse(document)
 	matches := doc.FindAll("tr", "class", className)
+	printLeaguepediaMatches(matches)
+}
 
+/* Refactored method to print matches from Leaguepedia
+ * Receives
+ * matches ([]soup.Root) - Slice of matches
+ */
+func printLeaguepediaMatches(matches []soup.Root) {
 	for _, match := range matches {
 		// only go through the td elements that have information about a match
 		if date, ok := match.Attrs()["data-date"]; ok {
