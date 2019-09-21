@@ -17,18 +17,24 @@ type Config struct {
 	ShowResults   bool     `json:"showResults"`
 }
 
+func checkErr(err error) {
+  if err != nil {
+    utils.HandleError(err)
+  }
+}
+
 // CreateConfig adds information to a Config struct
 func CreateConfig() Config {
 	var config Config
-	jsonFile, err := ioutil.ReadFile("./config.json")
-	if err != nil {
-		utils.HandleError(err)
-	}
 
-	err = json.Unmarshal(jsonFile, &config)
-	if err != nil {
-		utils.HandleError(err)
-	}
+  if _, err := os.Stat("./config.json"); err == nil {
+	  jsonFile, err := ioutil.ReadFile("./config.json")
+    checkErr(err)
+    err = json.Unmarshal(jsonFile, &config)
+    checkErr(err)
+  }
+
+  config.APIKey = os.Getenv("PANDASCORE_KEY")
 
 	if config.APIKey == "" {
 		fmt.Println("ERROR: PandaScore API key missing.")
