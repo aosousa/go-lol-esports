@@ -3,14 +3,25 @@
 **Golang application to get League of Legends Esports information (matches, leagues, etc.) using the Pandascore API and the Leaguepedia website.**
 
 ### Installation
-Download the executable in the [Releases tab](https://github.com/aosousa/go-lol-esports/releases).
+You need to install Golang on your machine. If it's not installed, be sure to
+[install Golang](https://golang.org/doc/install).
 
-This tool requires a `config.json` file present in the same directory as the executable, with the following structure:
+After this, you need to configure your Pandascore API key as an environment variable.
+```sh
+echo 'export PANDASCORE_KEY="<apiKey"' >> <terminalFile>
+```
+
+To get your `<apiKey>` go to (Pandascore
+settings)[https://pandascore.co/settings] and you'll be able to see your API
+key. As for the `<terminalFile`, it depends on your terminal. If you're using
+bash, change it for `~/.bashrc`, as for zsh, you can change for `~/.zshenv`.
+
+You can use a `config.json` if you want to add some configurations. The variable
+names are trivial. Check the following structure:
 ```json
 {
-    "apiKey": "<your-Pandascore-API-key>",
-    "ignoreLeagues": "<Array of leagues to ignore> (i.e. ['LCS', 'VCS'])",
-    "showResults": true "(Whether or not to show match results if they are available)"
+    "ignoreLeagues": ["CBLOL", "LCS"],
+    "showResults": true 
 }
 ```
 
