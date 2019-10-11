@@ -25,25 +25,25 @@ names are trivial. Check the following structure:
 }
 ```
 
-Available league codes (for the ignoreLeagues configuration):
+Available league codes and splits:
 
-| League Code | Description |
-| --- | --- |
-| LCS | LoL Championship Series (NA) |
-| LEC | LoL European Championship | 
-| LCK | LoL Champions Korea | 
-| Challenger Korea | LoL Challengers Korea |
-| LPL | LoL Pro League (China) |
-| LMS | League Master Series (Taiwan) |
-| CBLOL | Campeonato Brasileiro LoL (Brazil) |
-| LCL | LoL Russia League |
-| LJL | LoL Japan League |
-| LLA | Latin America League |
-| OPL | Oceanic Pro League |
-| LST | LoL SEA Tour |
-| TCL | Turkish Champions League |
-| VCS | Vietnam Championship Series |
-| LVP SLO | SuperLiga Orange (Spain) |
+| League Code | Description | Splits |
+| --- | --- | --- |
+| LCS | LoL Championship Series (NA) | Spring, Summer |
+| LEC | LoL European Championship | Spring, Summer |
+| LCK | LoL Champions Korea | Spring, Summer |
+| Challenger Korea | LoL Challengers Korea | |
+| LPL | LoL Pro League (China) | Spring, Summer |
+| LMS | League Master Series (Taiwan) | Spring, Summer |
+| CBLOL | Campeonato Brasileiro LoL (Brazil) | Winter, Summer |
+| LCL | LoL Russia League | Spring, Summer |
+| LJL | LoL Japan League | Spring, Summer |
+| LLA | Latin America League | Opening, Closing |
+| OPL | Oceanic Pro League | Split_1, Split_2 |
+| LST | LoL SEA Tour | Spring, Summer |
+| TCL | Turkish Champions League | Winter, Summer |
+| VCS | Vietnam Championship Series | Spring, Summer |
+| LVP SLO | SuperLiga Orange (Spain) | |
 
 ### Usage
 ```
