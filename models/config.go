@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/aosousa/go-lol-esports/utils"
+	utils "github.com/aosousa/golang-utils"
 )
 
 /*Config struct contains all the necessary configurations for the app
@@ -18,23 +18,23 @@ type Config struct {
 }
 
 func checkErr(err error) {
-  if err != nil {
-    utils.HandleError(err)
-  }
+	if err != nil {
+		utils.HandleError(err)
+	}
 }
 
 // CreateConfig adds information to a Config struct
 func CreateConfig() Config {
 	var config Config
 
-  if _, err := os.Stat("./config.json"); err == nil {
-	  jsonFile, err := ioutil.ReadFile("./config.json")
-    checkErr(err)
-    err = json.Unmarshal(jsonFile, &config)
-    checkErr(err)
-  }
+	if _, err := os.Stat("./config.json"); err == nil {
+		jsonFile, err := ioutil.ReadFile("./config.json")
+		checkErr(err)
+		err = json.Unmarshal(jsonFile, &config)
+		checkErr(err)
+	}
 
-  config.APIKey = os.Getenv("PANDASCORE_KEY")
+	config.APIKey = os.Getenv("PANDASCORE_KEY")
 
 	if config.APIKey == "" {
 		fmt.Println("ERROR: PandaScore API key missing.")

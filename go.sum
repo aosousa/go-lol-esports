@@ -2,5 +2,7 @@ github.com/anaskhan96/soup v1.1.1 h1:Duux/0htS2Va7XLJ9qIakCSey790hg9OFRm2FwlMTy0
 github.com/anaskhan96/soup v1.1.1/go.mod h1:pT5vs4HXDwA5y4KQCsKvnkpQd3D+joP7IqpiGskfWW0=
 github.com/aosousa/golang-utils v0.0.0-20190305134242-4e4c27d6a3ba h1:N/O8fzmA3x6xVXsZ7/Uta2kkWQyP0Ys3cqR6wl81xFE=
 github.com/aosousa/golang-utils v0.0.0-20190305134242-4e4c27d6a3ba/go.mod h1:+2jENIbK2BMw5DpaLfnunvciOgy2n/43Jeo/YJJMOrk=
+github.com/aosousa/golang-utils v0.0.0-20191011084412-342eaf01e208 h1:VxlxnnCOXnPcYBL22RM0/PNb99DRNauLjDmSK2Z7gXc=
+github.com/aosousa/golang-utils v0.0.0-20191011084412-342eaf01e208/go.mod h1:+2jENIbK2BMw5DpaLfnunvciOgy2n/43Jeo/YJJMOrk=
 golang.org/x/net v0.0.0-20190227022144-312bce6e941f h1:tbtX/qtlxzhZjgQue/7u7ygFwDEckd+DmS5+t8FgeKE=
 golang.org/x/net v0.0.0-20190227022144-312bce6e941f/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=

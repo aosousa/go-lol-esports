@@ -6,18 +6,19 @@
 You need to install Golang on your machine. If it's not installed, be sure to
 [install Golang](https://golang.org/doc/install).
 
+Alternatively, you can download the executable in the [Releases tab](https://github.com/aosousa/go-lol-esports/releases).
+
 After this, you need to configure your Pandascore API key as an environment variable.
 ```sh
-echo 'export PANDASCORE_KEY="<apiKey"' >> <terminalFile>
+echo 'export PANDASCORE_KEY="<apiKey>"' >> <terminalFile>
 ```
 
-To get your `<apiKey>` go to (Pandascore
-settings)[https://pandascore.co/settings] and you'll be able to see your API
-key. As for the `<terminalFile`, it depends on your terminal. If you're using
+To get your `<apiKey>` go to [Pandascore
+settings](https://pandascore.co/settings) and you'll be able to see your API
+key. As for the `<terminalFile>`, it depends on your terminal. If you're using
 bash, change it for `~/.bashrc`, as for zsh, you can change for `~/.zshenv`.
 
-You can use a `config.json` if you want to add some configurations. The variable
-names are trivial. Check the following structure:
+You can use a `config.json` if you want to add some configurations by following this structure:
 ```json
 {
     "ignoreLeagues": ["CBLOL", "LCS"],
